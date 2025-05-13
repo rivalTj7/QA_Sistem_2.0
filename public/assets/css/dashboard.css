@@ -1,0 +1,642 @@
+/* Elementos sin datos */
+.no-data {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+}
+
+.no-data i {
+  font-size: 3em;
+  margin-bottom: 15px;
+  color: var(--border-color);
+}
+
+/* Skeleton loaders para carga */
+.skeleton {
+  animation: skeleton-loading 1s linear infinite alternate;
+  border-radius: 4px;
+  background-color: #eee;
+}
+
+.skeleton-text {
+  height: 16px;
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.skeleton-text:last-child {
+  width: 80%;
+}
+
+.skeleton-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: #eee;
+  }
+  100% {
+    background-color: #ddd;
+  }
+}
+
+/* Tarjetas de servicios mejoradas */
+.service-card {
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.service-metrics {
+  margin: 15px 0;
+}
+
+.metric-item {
+  margin-bottom: 15px;
+}
+
+.metric-label {
+  font-size: 0.85em;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+
+.metric-value {
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.metric-value.high {
+  color: var(--status-operational);
+}
+
+.metric-value.medium {
+  color: var(--status-degraded);
+}
+
+.metric-value.low {
+  color: var(--status-major);
+}
+
+.service-info {
+  font-size: 0.9em;
+  color: var(--text-muted);
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.info-item i {
+  width: 20px;
+  color: var(--primary-color);
+}
+
+.response-time-indicator {
+  height: 4px;
+  width: 100%;
+  background-color: #eee;
+  border-radius: 2px;
+  margin-top: 5px;
+  position: relative;
+}
+
+.response-time-indicator::after {
+  content: '';
+  position: absolute;
+  height: 100%;
+  border-radius: 2px;
+}
+
+.response-time-indicator.good::after {
+  background-color: var(--status-operational);
+  width: 30%;
+}
+
+.response-time-indicator.warning::after {
+  background-color: var(--status-degraded);
+  width: 60%;
+}
+
+.response-time-indicator.critical::after {
+  background-color: var(--status-major);
+  width: 90%;
+}
+
+/* Mejoras para incidentes */
+.incident-item {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 15px;
+  background-color: white;
+  transition: all 0.2s ease;
+}
+
+.incident-item:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Estados de usuario */
+.user-badge {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.75em;
+  margin-left: 5px;
+}
+
+.user-badge.superuser {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.user-badge.user {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Filtros y búsqueda */
+.filter-section {
+  margin-bottom: 20px;
+}
+
+.search-box {
+  position: relative;
+}
+
+.search-box input {
+  padding-left: 40px;
+}
+
+.search-box i {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+/* Indicadores de estado mejorados */
+.status-indicator-small {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.status-indicator-small.operational {
+  background-color: var(--status-operational);
+}
+
+.status-indicator-small.degraded {
+  background-color: var(--status-degraded);
+}
+
+.status-indicator-small.partial {
+  background-color: var(--status-partial);
+}
+
+.status-indicator-small.major {
+  background-color: var(--status-major);
+}
+
+/* Animaciones */
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(52, 152, 219, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+  }
+}
+
+/* Accesibilidad para usuarios públicos */
+.public-user-notice {
+  background-color: var(--info-color);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.public-user-notice i {
+  margin-right: 8px;
+}
+
+/* Mejoras responsivas */
+@media (max-width: 576px) {
+  .metric-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .metric-circle {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+  
+  .incident-meta {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .service-card .card-footer {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .service-card .card-footer button {
+    width: 100%;
+  }
+}
+
+/* Tooltip personalizado */
+.custom-tooltip {
+  position: relative;
+  cursor: help;
+}
+
+.custom-tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--dark-color);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.85em;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.custom-tooltip:hover::after {
+  opacity: 1;
+}
+
+/* Mejoras de impresión */
+@media print {
+  .sidebar,
+  .navbar,
+  .btn,
+  .modal {
+    display: none !important;
+  }
+  
+  #content {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+  
+  .card {
+    break-inside: avoid;
+  }
+}/* Estilos específicos para el dashboard */
+
+/* Indicador de estado general */
+.status-indicator {
+  padding: 20px 0;
+  text-align: center;
+}
+
+.status-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  color: white;
+  font-size: 3em;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.status-circle.operational {
+  background-color: var(--status-operational);
+}
+
+.status-circle.degraded {
+  background-color: var(--status-degraded);
+}
+
+.status-circle.partial {
+  background-color: var(--status-partial);
+}
+
+.status-circle.major {
+  background-color: var(--status-major);
+}
+
+.status-circle.maintenance {
+  background-color: var(--status-maintenance);
+}
+
+.last-updated {
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+
+/* Métricas de disponibilidad */
+.metric-container {
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+}
+
+.metric-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9em;
+  color: white;
+  background-color: var(--primary-color);
+  margin-right: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.metric-circle span {
+  font-size: 1.8em;
+  font-weight: bold;
+}
+
+.metric-info {
+  flex: 1;
+}
+
+/* Métricas con distintos colores según el porcentaje */
+.metric-circle.high {
+  background-color: var(--status-operational);
+}
+
+.metric-circle.medium {
+  background-color: var(--status-degraded);
+}
+
+.metric-circle.low {
+  background-color: var(--status-major);
+}
+
+/* Tabla de servicios */
+.services-table .service-name {
+  font-weight: 500;
+}
+
+.services-table .service-description {
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+
+.uptime-bar {
+  height: 8px;
+  background-color: #eee;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.uptime-value {
+  height: 100%;
+  background-color: var(--status-operational);
+  border-radius: 4px;
+}
+
+/* Tarjetas de incidentes */
+.incident-card {
+  border-left: 4px solid var(--status-degraded);
+  margin-bottom: 15px;
+  transition: all 0.2s ease;
+}
+
+.incident-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.incident-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.incident-title {
+  font-weight: 500;
+  margin: 0;
+}
+
+.incident-body {
+  padding: 15px;
+}
+
+.incident-meta {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+  color: var(--text-muted);
+  font-size: 0.85em;
+}
+
+.incident-footer {
+  background-color: rgba(0, 0, 0, 0.02);
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.9em;
+}
+
+.incident-time {
+  color: var(--text-muted);
+}
+
+/* Estados de incidentes */
+.incident-card.investigating {
+  border-left-color: var(--warning-color);
+}
+
+.incident-card.identified {
+  border-left-color: var(--status-partial);
+}
+
+.incident-card.monitoring {
+  border-left-color: var(--primary-color);
+}
+
+.incident-card.resolved {
+  border-left-color: var(--success-color);
+}
+
+/* Tarjetas de detalles de servicio */
+.service-details {
+  padding: 20px 0;
+}
+
+.service-detail-item {
+  margin-bottom: 15px;
+}
+
+.service-detail-label {
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: var(--text-muted);
+}
+
+.service-detail-value {
+  font-size: 1.1em;
+}
+
+.service-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.service-tag {
+  background-color: var(--light-color);
+  color: var(--text-color);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+/* Historial de incidentes */
+.incident-history {
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 20px;
+}
+
+.incident-history:before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: var(--border-color);
+}
+
+.history-item {
+  position: relative;
+  padding: 15px 0;
+}
+
+.history-item:before {
+  content: '';
+  position: absolute;
+  left: -30px;
+  top: 20px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  border: 2px solid white;
+  z-index: 1;
+}
+
+.history-time {
+  font-size: 0.85em;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+
+.history-content {
+  background-color: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
+}
+
+/* Gráficos */
+.chart-container {
+  height: 300px;
+  position: relative;
+  margin-top: 20px;
+}
+
+/* Elementos sin datos */
+.no-data {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+}
+
+.no-data i {
+  font-size: 3em;
+  margin-bottom: 15px;
+  color: var(--border-color);
+}
+
+/* Skeleton loaders para carga */
+.skeleton {
+  animation: skeleton-loading 1s linear infinite alternate;
+  border-radius: 4px;
+  background-color: #eee;
+}
+
+.skeleton-text {
+  height: 16px;
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.skeleton-text:last-child {
+  width: 80%;
+}
+
+.skeleton-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: #eee;
+  }
+  100% {
+    background-color: #ddd;
+  }
+}

@@ -1,0 +1,97 @@
+/* Estilos específicos para el panel de administración */
+
+/* Tarjetas de administración */
+.admin-card {
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.admin-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.admin-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: var(--primary-color);
+}
+
+/* Tarjetas de estadísticas */
+.stat-card {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: var(--light-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+  font-size: 2rem;
+  margin-right: 20px;
+  color: var(--primary-color);
+  background-color: rgba(52, 152, 219, 0.1);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.stat-info h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0;
+  font-weight: 600;
+}
+
+.stat-info p {
+  margin-bottom: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Tablas de administración */
+.table-action-btn {
+  margin-right: 5px;
+}
+
+/* Formularios */
+.form-section {
+  margin-bottom: 30px;
+}
+
+.form-section-title {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  color: var(--text-color);
+}
+
+.system-badge {
+  font-size: 0.8rem;
+  padding: 3px 6px;
+  border-radius: 4px;
+  margin-left: 5px;
+  background-color: #f1f1f1;
+  color: var(--text-muted);
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+  .stat-card {
+    margin-bottom: 15px;
+  }
+  
+  .admin-card {
+    margin-bottom: 15px;
+  }
+}

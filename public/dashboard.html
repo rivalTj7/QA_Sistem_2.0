@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard de Servicios QA</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+<body>
+  <div class="wrapper">
+    <!-- Sidebar -->
+    <nav id="sidebar" class="active">
+      <div class="sidebar-header">
+        <h3>QA Monitor</h3>
+      </div>
+
+      <ul class="list-unstyled components">
+        <li class="active">
+          <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        </li>
+        <li>
+          <a href="#services-submenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <i class="fas fa-server"></i> Servicios
+          </a>
+          <ul class="collapse list-unstyled" id="services-submenu">
+            <li>
+              <a href="#" id="view-services-link">Ver todos</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#incidents-submenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <i class="fas fa-exclamation-triangle"></i> Incidentes
+          </a>
+          <ul class="collapse list-unstyled" id="incidents-submenu">
+            <li>
+              <a href="#" id="view-incidents-link">Ver activos</a>
+            </li>
+            <li>
+              <a href="#" id="report-incident-link">Reportar incidente</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="history.html" id="view-history-link"><i class="fas fa-history"></i> Historial</a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <p>© 2025 QA Monitor</p>
+      </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div id="content">
+      <!-- Top Navigation -->
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <button type="button" id="sidebarCollapse" class="btn btn-info">
+            <i class="fas fa-bars"></i>
+          </button>
+          
+          <div class="d-flex ms-auto">
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary dropdown-toggle user-menu" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-user"></i> <span id="username">Usuario</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="login.html" id="login-link">Iniciar sesión</a></li>
+                <li><a class="dropdown-item" href="admin.html" id="admin-link" class="d-none">Panel de admin</a></li>
+                <li><hr class="dropdown-divider" id="user-divider" class="d-none"></li>
+                <li><a class="dropdown-item" href="#" id="logout-link" class="d-none">Cerrar sesión</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <div class="container-fluid">
+        <!-- Status Overview -->
+        <div class="row mb-4">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body text-center">
+                <h2 class="card-title">Estado General de Servicios</h2>
+                <div class="status-indicator">
+                  <div id="status-icon" class="status-circle operational">
+                    <i class="fas fa-check"></i>
+                  </div>
+                  <h3 id="status-text">Todos los servicios operativos</h3>
+                </div>
+                <p class="last-updated">Última actualización: <span id="last-updated-time">Cargando...</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Availability Metrics -->
+        <div class="row mb-4">
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Disponibilidad 24h</h5>
+                <div class="metric-container">
+                  <div class="metric-circle" id="uptime-24h-circle">
+                    <span id="uptime-24h">--</span>%
+                  </div>
+                  <div class="metric-info">
+                    <p>Últimas 24 horas</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Disponibilidad 7d</h5>
+                <div class="metric-container">
+                  <div class="metric-circle" id="uptime-7d-circle">
+                    <span id="uptime-7d">--</span>%
+                  </div>
+                  <div class="metric-info">
+                    <p>Últimos 7 días</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Disponibilidad 30d</h5>
+                <div class="metric-container">
+                  <div class="metric-circle" id="uptime-30d-circle">
+                    <span id="uptime-30d">--</span>%
+                  </div>
+                  <div class="metric-info">
+                    <p>Últimos 30 días</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Services Overview -->
+        <div class="row mb-4">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Servicios</h5>
+                <button class="btn btn-primary btn-sm" id="refresh-services-btn">
+                  <i class="fas fa-sync-alt"></i> Actualizar
+                </button>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover" id="services-table">
+                    <thead>
+                      <tr>
+                        <th>Servicio</th>
+                        <th class="text-center">Estado</th>
+                        <th>Disponibilidad 30d</th>
+                        <th>Tiempo de respuesta</th>
+                        <th class="text-center">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody id="services-table-body">
+                      <!-- Los servicios se cargarán dinámicamente -->
+                      <tr>
+                        <td colspan="5" class="text-center">Cargando servicios...</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Incidents -->
+        <div class="row mb-4">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Incidentes Activos</h5>
+                <button class="btn btn-danger btn-sm" id="report-incident-btn">
+                  <i class="fas fa-plus"></i> Reportar Incidente
+                </button>
+              </div>
+              <div class="card-body">
+                <div id="active-incidents-container">
+                  <!-- Los incidentes se cargarán dinámicamente -->
+                  <p class="text-center">Cargando incidentes...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modals -->
+  <!-- Modal de Login -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="login-form">
+            <div class="mb-3">
+              <label for="username" class="form-label">Usuario</label>
+              <input type="text" class="form-control" id="login-username" required>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña</label>
+              <input type="password" class="form-control" id="login-password" required>
+            </div>
+            <div id="login-error" class="alert alert-danger d-none"></div>
+            <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Servicio -->
+  <div class="modal fade" id="serviceModal" tabindex="-1" aria-labelledby="serviceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="serviceModalLabel">Detalles del Servicio</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="service-details-container">
+            <!-- Los detalles del servicio se cargarán dinámicamente -->
+            <p class="text-center">Cargando detalles...</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" id="edit-service-btn">Editar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Edición de Servicio -->
+  <div class="modal fade" id="editServiceModal" tabindex="-1" aria-labelledby="editServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editServiceModalLabel">Editar Servicio</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="edit-service-form">
+            <input type="hidden" id="edit-service-id">
+            <div class="mb-3">
+              <label for="edit-service-name" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="edit-service-name" required>
+            </div>
+            <div class="mb-3">
+              <label for="edit-service-description" class="form-label">Descripción</label>
+              <textarea class="form-control" id="edit-service-description" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="edit-service-endpoint" class="form-label">Endpoint</label>
+              <input type="text" class="form-control" id="edit-service-endpoint" required>
+            </div>
+            <div class="mb-3">
+              <label for="edit-service-status" class="form-label">Estado</label>
+              <select class="form-select" id="edit-service-status" required>
+                <option value="operational">Operativo</option>
+                <option value="degraded_performance">Rendimiento degradado</option>
+                <option value="partial_outage">Interrupción parcial</option>
+                <option value="major_outage">Interrupción mayor</option>
+                <option value="maintenance">Mantenimiento</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="edit-service-threshold" class="form-label">Umbral de tiempo de respuesta (ms)</label>
+              <input type="number" class="form-control" id="edit-service-threshold" min="0" required>
+            </div>
+            <div class="mb-3">
+              <label for="edit-service-tags" class="form-label">Etiquetas (separadas por comas)</label>
+              <input type="text" class="form-control" id="edit-service-tags">
+            </div>
+            <div id="edit-service-error" class="alert alert-danger d-none"></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="delete-service-btn">Eliminar</button>
+          <button type="button" class="btn btn-primary" id="save-service-btn">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Reporte de Incidente -->
+  <div class="modal fade" id="reportIncidentModal" tabindex="-1" aria-labelledby="reportIncidentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="reportIncidentModalLabel">Reportar Incidente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="report-incident-form">
+            <div class="mb-3">
+              <label for="incident-service" class="form-label">Servicio afectado</label>
+              <select class="form-select" id="incident-service" required>
+                <!-- Las opciones se cargarán dinámicamente -->
+                <option value="">Seleccione un servicio</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="incident-title" class="form-label">Título</label>
+              <input type="text" class="form-control" id="incident-title" required>
+            </div>
+            <div class="mb-3">
+              <label for="incident-description" class="form-label">Descripción</label>
+              <textarea class="form-control" id="incident-description" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="incident-severity" class="form-label">Severidad</label>
+              <select class="form-select" id="incident-severity" required>
+                <option value="low">Baja</option>
+                <option value="medium" selected>Media</option>
+                <option value="high">Alta</option>
+                <option value="critical">Crítica</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="incident-status" class="form-label">Estado</label>
+              <select class="form-select" id="incident-status" required>
+                <option value="investigating" selected>Investigando</option>
+                <option value="identified">Identificado</option>
+                <option value="monitoring">Monitoreando</option>
+                <option value="resolved">Resuelto</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="incident-components" class="form-label">Componentes afectados (separados por comas)</label>
+              <input type="text" class="form-control" id="incident-components">
+            </div>
+            <div id="report-incident-error" class="alert alert-danger d-none"></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="submit-incident-btn">Reportar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Custom JavaScript -->
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+  <script src="assets/js/services.js"></script>
+  <script src="assets/js/incidents.js"></script>
+</body>
+</html>

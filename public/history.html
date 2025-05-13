@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historial de Incidentes - Monitor de Servicios QA</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css">
+  <style>
+    .incident-month-group {
+      margin-bottom: 30px;
+    }
+    
+    .month-header {
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .incident-list {
+      display: grid;
+      gap: 15px;
+    }
+    
+    .filters-section {
+      margin-bottom: 30px;
+    }
+    
+    .incident-card.border-success {
+      border-left-color: var(--status-operational) !important;
+    }
+    
+    .incident-card.border-danger {
+      border-left-color: var(--status-major) !important;
+    }
+    
+    .incident-card.border-warning {
+      border-left-color: var(--status-degraded) !important;
+    }
+    
+    .incident-card.border-info {
+      border-left-color: var(--primary-color) !important;
+    }
+    
+    .incident-resolution {
+      background-color: rgba(40, 167, 69, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <!-- Sidebar -->
+    <nav id="sidebar" class="active">
+      <div class="sidebar-header">
+        <h3>QA Monitor</h3>
+      </div>
+
+      <ul class="list-unstyled components">
+        <li>
+          <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        </li>
+        <li>
+          <a href="#services-submenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <i class="fas fa-server"></i> Servicios
+          </a>
+          <ul class="collapse list-unstyled" id="services-submenu">
+            <li>
+              <a href="dashboard.html">Ver todos</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#incidents-submenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <i class="fas fa-exclamation-triangle"></i> Incidentes
+          </a>
+          <ul class="collapse list-unstyled" id="incidents-submenu">
+            <li>
+              <a href="#" id="view-incidents-link">Ver activos</a>
+            </li>
+            <li>
+              <a href="#" id="report-incident-link">Reportar incidente</a>
+            </li>
+          </ul>
+        </li>
+        <li class="active">
+          <a href="history.html"><i class="fas fa-history"></i> Historial</a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <p>© 2025 QA Monitor</p>
+      </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div id="content">
+      <!-- Top Navigation -->
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <button type="button" id="sidebarCollapse" class="btn btn-info">
+            <i class="fas fa-bars"></i>
+          </button>
+          
+          <div class="d-flex ms-auto">
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary dropdown-toggle user-menu" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-user"></i> <span id="username">Usuario</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="login.html" id="login-link">Iniciar sesión</a></li>
+                <li><a class="dropdown-item" href="#" id="logout-link" class="d-none">Cerrar sesión</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <div class="container-fluid">
+        <!-- Page Header -->
+        <div class="row mb-4">
+          <div class="col-12">
+            <div id="incident-history-container">
+              <!-- Los incidentes se cargarán dinámicamente -->
+              <div class="text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p class="mt-2">Cargando historial de incidentes...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Detalles del Incidente -->
+  <div class="modal fade" id="incidentDetailModal" tabindex="-1" aria-labelledby="incidentDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="incidentDetailModalLabel">Detalles del Incidente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="incident-detail-body">
+          <!-- Los detalles se cargarán dinámicamente -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Reporte de Incidente -->
+  <div class="modal fade" id="reportIncidentModal" tabindex="-1" aria-labelledby="reportIncidentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="reportIncidentModalLabel">Reportar Incidente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="report-incident-form">
+            <div class="mb-3">
+              <label for="incident-service" class="form-label">Servicio afectado</label>
+              <select class="form-select" id="incident-service" required>
+                <option value="">Seleccione un servicio</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="incident-title" class="form-label">Título</label>
+              <input type="text" class="form-control" id="incident-title" required>
+            </div>
+            <div class="mb-3">
+              <label for="incident-description" class="form-label">Descripción</label>
+              <textarea class="form-control" id="incident-description" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="incident-severity" class="form-label">Severidad</label>
+              <select class="form-select" id="incident-severity" required>
+                <option value="low">Baja</option>
+                <option value="medium" selected>Media</option>
+                <option value="high">Alta</option>
+                <option value="critical">Crítica</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="incident-status" class="form-label">Estado</label>
+              <select class="form-select" id="incident-status" required>
+                <option value="investigating" selected>Investigando</option>
+                <option value="identified">Identificado</option>
+                <option value="monitoring">Monitoreando</option>
+                <option value="resolved">Resuelto</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="incident-components" class="form-label">Componentes afectados (separados por comas)</label>
+              <input type="text" class="form-control" id="incident-components">
+            </div>
+            <div id="report-incident-error" class="alert alert-danger d-none"></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="submit-incident-btn">Reportar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom JavaScript -->
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/incidents.js"></script>
+  <script src="assets/js/services.js"></script>
+  
+  <script>
+    // Variable para almacenar todos los incidentes
+    let allIncidents = [];
+    let filteredIncidents = [];
+    
+    // Inicialización cuando el DOM está listo
+    document.addEventListener('DOMContentLoaded', function() {
+      // Verificar autenticación y actualizar UI
+      updateAuthUI();
+      
+      // Cargar historial de incidentes
+      loadAllIncidents();
+      
+      // Configurar eventos de filtros
+      setupFilterEvents();
+      
+      // Configurar navegación
+      setupNavigation();
+    });
+    
+    /**
+     * Actualiza la UI según el estado de autenticación
+     */
+    function updateAuthUI() {
+      const isAuthenticated = AUTH.isAuthenticated();
+      const user = AUTH.getCurrentUser();
+      
+      if (isAuthenticated && user) {
+        document.getElementById('username').textContent = user.name || user.username;
+        document.getElementById('login-link').classList.add('d-none');
+        document.getElementById('logout-link').classList.remove('d-none');
+      } else {
+        document.getElementById('username').textContent = 'Usuario';
+        document.getElementById('login-link').classList.remove('d-none');
+        document.getElementById('logout-link').classList.add('d-none');
+      }
+    }
+    
+    /**
+     * Carga todos los incidentes
+     */
+    async function loadAllIncidents() {
+      try {
+        // Cargar incidentes
+        const incidentsResponse = await API.get('/incidents');
+        allIncidents = incidentsResponse.data.data.incidents;
+        filteredIncidents = [...allIncidents];
+        
+        // Cargar servicios para el filtro y el formulario
+        const servicesResponse = await API.get('/services');
+        const services = servicesResponse.data.data.services;
+        
+        // Llenar el select de servicios en el filtro
+        const filterServiceSelect = document.getElementById('filter-service');
+        services.forEach(service => {
+          const option = document.createElement('option');
+          option.value = service.id;
+          option.textContent = service.name;
+          filterServiceSelect.appendChild(option);
+        });
+        
+        // Llenar el select de servicios en el formulario de reporte
+        const incidentServiceSelect = document.getElementById('incident-service');
+        services.forEach(service => {
+          const option = document.createElement('option');
+          option.value = service.id;
+          option.textContent = service.name;
+          incidentServiceSelect.appendChild(option);
+        });
+        
+        // Renderizar incidentes
+        renderIncidents(filteredIncidents);
+      } catch (error) {
+        console.error('Error al cargar incidentes:', error);
+        const container = document.getElementById('incident-history-container');
+        container.innerHTML = `
+          <div class="alert alert-danger">
+            <i class="fas fa-exclamation-circle"></i> Error al cargar el historial de incidentes
+          </div>
+        `;
+      }
+    }
+    
+    /**
+     * Renderiza los incidentes filtrados
+     */
+    function renderIncidents(incidents) {
+      const container = document.getElementById('incident-history-container');
+      
+      if (incidents.length === 0) {
+        container.innerHTML = `
+          <div class="no-data">
+            <i class="fas fa-filter"></i>
+            <p>No se encontraron incidentes con los filtros aplicados</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // Agrupar y renderizar
+      const incidentsByMonth = groupIncidentsByMonth(incidents);
+      let html = '';
+      
+      for (const [monthYear, monthIncidents] of Object.entries(incidentsByMonth)) {
+        html += `
+          <div class="incident-month-group">
+            <h4 class="month-header">${monthYear}</h4>
+            <div class="incident-list">
+        `;
+        
+        monthIncidents.forEach(incident => {
+          html += generateIncidentCard(incident);
+        });
+        
+        html += `
+            </div>
+          </div>
+        `;
+      }
+      
+      container.innerHTML = html;
+      
+      // Añadir eventos a las tarjetas
+      addIncidentCardEvents();
+    }
+    
+    /**
+     * Configura los eventos de los filtros
+     */
+    function setupFilterEvents() {
+      // Aplicar filtros
+      document.getElementById('apply-filters-btn').addEventListener('click', applyFilters);
+      
+      // Limpiar filtros
+      document.getElementById('clear-filters-btn').addEventListener('click', clearFilters);
+      
+      // Aplicar filtros al presionar Enter en cualquier select
+      document.querySelectorAll('.filters-section select').forEach(select => {
+        select.addEventListener('change', applyFilters);
+      });
+    }
+    
+    /**
+     * Aplica los filtros seleccionados
+     */
+    function applyFilters() {
+      const serviceFilter = document.getElementById('filter-service').value;
+      const statusFilter = document.getElementById('filter-status').value;
+      const severityFilter = document.getElementById('filter-severity').value;
+      const dateFilter = document.getElementById('filter-date').value;
+      
+      filteredIncidents = allIncidents.filter(incident => {
+        // Filtro por servicio
+        if (serviceFilter && incident.serviceId !== serviceFilter) {
+          return false;
+        }
+        
+        // Filtro por estado
+        if (statusFilter && incident.status !== statusFilter) {
+          return false;
+        }
+        
+        // Filtro por severidad
+        if (severityFilter && incident.severity !== severityFilter) {
+          return false;
+        }
+        
+        // Filtro por fecha
+        if (dateFilter) {
+          const incidentDate = new Date(incident.startTime);
+          const now = new Date();
+          
+          switch (dateFilter) {
+            case 'today':
+              if (incidentDate.toDateString() !== now.toDateString()) {
+                return false;
+              }
+              break;
+            case 'week':
+              const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+              if (incidentDate < weekAgo) {
+                return false;
+              }
+              break;
+            case 'month':
+              const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+              if (incidentDate < monthAgo) {
+                return false;
+              }
+              break;
+            case 'year':
+              const yearAgo = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
+              if (incidentDate < yearAgo) {
+                return false;
+              }
+              break;
+          }
+        }
+        
+        return true;
+      });
+      
+      renderIncidents(filteredIncidents);
+    }
+    
+    /**
+     * Limpia todos los filtros
+     */
+    function clearFilters() {
+      document.getElementById('filter-service').value = '';
+      document.getElementById('filter-status').value = '';
+      document.getElementById('filter-severity').value = '';
+      document.getElementById('filter-date').value = '';
+      
+      filteredIncidents = [...allIncidents];
+      renderIncidents(filteredIncidents);
+    }
+    
+    /**
+     * Configura la navegación
+     */
+    function setupNavigation() {
+      // Toggle del sidebar
+      document.getElementById('sidebarCollapse').addEventListener('click', function() {
+        document.getElementById('sidebar').classList.toggle('active');
+        document.getElementById('content').classList.toggle('active');
+      });
+      
+      // Reportar incidente
+      document.getElementById('report-incident-link').addEventListener('click', function(e) {
+        e.preventDefault();
+        const reportModal = new bootstrap.Modal(document.getElementById('reportIncidentModal'));
+        reportModal.show();
+      });
+      
+      // Ver incidentes activos
+      document.getElementById('view-incidents-link').addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = 'dashboard.html#incidents';
+      });
+      
+      // Logout
+      document.getElementById('logout-link').addEventListener('click', function(e) {
+        e.preventDefault();
+        AUTH.logout();
+      });
+      
+      // Submit incidente
+      document.getElementById('submit-incident-btn').addEventListener('click', submitIncidentReport);
+    }
+  </script>
+</body>
+</html>12">
+            <div class="card">
+              <div class="card-body">
+                <h2 class="card-title">Historial de Incidentes</h2>
+                <p class="card-text">Revisa el historial completo de incidentes reportados en todos los servicios.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="row filters-section">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Filtros</h5>
+                <div class="row g-3">
+                  <div class="col-md-3">
+                    <label for="filter-service" class="form-label">Servicio</label>
+                    <select class="form-select" id="filter-service">
+                      <option value="">Todos los servicios</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="filter-status" class="form-label">Estado</label>
+                    <select class="form-select" id="filter-status">
+                      <option value="">Todos los estados</option>
+                      <option value="investigating">Investigando</option>
+                      <option value="identified">Identificado</option>
+                      <option value="monitoring">Monitoreando</option>
+                      <option value="resolved">Resuelto</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="filter-severity" class="form-label">Severidad</label>
+                    <select class="form-select" id="filter-severity">
+                      <option value="">Todas las severidades</option>
+                      <option value="low">Baja</option>
+                      <option value="medium">Media</option>
+                      <option value="high">Alta</option>
+                      <option value="critical">Crítica</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="filter-date" class="form-label">Período</label>
+                    <select class="form-select" id="filter-date">
+                      <option value="">Todos los períodos</option>
+                      <option value="today">Hoy</option>
+                      <option value="week">Última semana</option>
+                      <option value="month">Último mes</option>
+                      <option value="year">Último año</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-12">
+                    <button class="btn btn-primary" id="apply-filters-btn">
+                      <i class="fas fa-filter"></i> Aplicar Filtros
+                    </button>
+                    <button class="btn btn-secondary" id="clear-filters-btn">
+                      <i class="fas fa-times"></i> Limpiar Filtros
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Historial de Incidentes -->
+        <div class="row">
+          <div class="col-12">
+            <div id="incident-history-container">
+              <!-- Los incidentes se cargarán dinámicamente -->
+              <div class="text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p class="mt-2">Cargando historial de incidentes...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>

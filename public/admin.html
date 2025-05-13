@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración - Monitor de Servicios QA</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+  <div class="wrapper">
+    <!-- Sidebar -->
+    <nav id="sidebar" class="active">
+      <div class="sidebar-header">
+        <h3>QA Monitor</h3>
+      </div>
+
+      <ul class="list-unstyled components">
+        <li>
+          <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        </li>
+        <li>
+          <a href="#services-submenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <i class="fas fa-server"></i> Servicios
+          </a>
+          <ul class="collapse list-unstyled" id="services-submenu">
+            <li>
+              <a href="#" id="view-services-link">Ver todos</a>
+            </li>
+            <li>
+              <a href="#" id="add-service-link">Añadir servicio</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#incidents-submenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <i class="fas fa-exclamation-triangle"></i> Incidentes
+          </a>
+          <ul class="collapse list-unstyled" id="incidents-submenu">
+            <li>
+              <a href="#" id="view-incidents-link">Ver todos</a>
+            </li>
+            <li>
+              <a href="#" id="report-incident-link">Reportar incidente</a>
+            </li>
+          </ul>
+        </li>
+        <li class="active">
+          <a href="admin.html"><i class="fas fa-cog"></i> Administración</a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <p>© 2025 QA Monitor</p>
+      </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div id="content">
+      <!-- Top Navigation -->
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <button type="button" id="sidebarCollapse" class="btn btn-info">
+            <i class="fas fa-bars"></i>
+          </button>
+          
+          <div class="d-flex ms-auto">
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary dropdown-toggle user-menu" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-user"></i> <span id="username">Usuario</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="#" id="profile-link">Mi perfil</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#" id="logout-link">Cerrar sesión</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <div class="container-fluid">
+        <!-- Admin Panel Header -->
+        <div class="row mb-4">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <h2 class="card-title">Panel de Administración</h2>
+                <p class="card-text">Gestiona usuarios, servicios y configuraciones del sistema.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin Menu -->
+        <div class="row mb-4">
+          <div class="col-md-4 mb-4">
+            <div class="card admin-card">
+              <div class="card-body text-center">
+                <div class="admin-icon">
+                  <i class="fas fa-users"></i>
+                </div>
+                <h5 class="card-title">Gestión de Usuarios</h5>
+                <p class="card-text">Administra usuarios, roles y permisos del sistema.</p>
+                <button class="btn btn-primary" id="manage-users-btn">Gestionar Usuarios</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="card admin-card">
+              <div class="card-body text-center">
+                <div class="admin-icon">
+                  <i class="fas fa-server"></i>
+                </div>
+                <h5 class="card-title">Gestión de Servicios</h5>
+                <p class="card-text">Crea, edita y configura los servicios monitoreados.</p>
+                <button class="btn btn-primary" id="manage-services-btn">Gestionar Servicios</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="card admin-card">
+              <div class="card-body text-center">
+                <div class="admin-icon">
+                  <i class="fas fa-cog"></i>
+                </div>
+                <h5 class="card-title">Configuración del Sistema</h5>
+                <p class="card-text">Ajusta las configuraciones globales del monitor.</p>
+                <button class="btn btn-primary" id="system-config-btn">Configurar Sistema</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- System Stats -->
+        <div class="row mb-4">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="mb-0">Estadísticas del Sistema</h5>
+              </div>
+              <div class="card-body">
+                <div class="row g-4">
+                  <div class="col-md-3">
+                    <div class="stat-card">
+                      <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                      </div>
+                      <div class="stat-info">
+                        <h3 id="user-count">--</h3>
+                        <p>Usuarios</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="stat-card">
+                      <div class="stat-icon">
+                        <i class="fas fa-server"></i>
+                      </div>
+                      <div class="stat-info">
+                        <h3 id="service-count">--</h3>
+                        <p>Servicios</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="stat-card">
+                      <div class="stat-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                      </div>
+                      <div class="stat-info">
+                        <h3 id="incident-count">--</h3>
+                        <p>Incidentes</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="stat-card">
+                      <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                      </div>
+                      <div class="stat-info">
+                        <h3 id="uptime">--</h3>
+                        <p>Disponibilidad Media</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Management Section (Initially Hidden) -->
+        <div class="row mb-4 d-none" id="user-management-section">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Gestión de Usuarios</h5>
+                <button class="btn btn-primary btn-sm" id="add-user-btn">
+                  <i class="fas fa-plus"></i> Nuevo Usuario
+                </button>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover" id="users-table">
+                    <thead>
+                      <tr>
+                        <th>Nombre</th>
+                        <th>Usuario</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Creado</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody id="users-table-body">
+                      <!-- Los usuarios se cargarán dinámicamente -->
+                      <tr>
+                        <td colspan="6" class="text-center">Cargando usuarios...</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service Management Section (Initially Hidden) -->
+        <div class="row mb-4 d-none" id="service-management-section">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Gestión de Servicios</h5>
+                <button class="btn btn-primary btn-sm" id="add-service-admin-btn">
+                  <i class="fas fa-plus"></i> Nuevo Servicio
+                </button>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover" id="services-admin-table">
+                    <thead>
+                      <tr>
+                        <th>Nombre</th>
+                        <th>Endpoint</th>
+                        <th class="text-center">Estado</th>
+                        <th>Disponibilidad</th>
+                        <th>Tiempo de respuesta</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody id="services-admin-table-body">
+                      <!-- Los servicios se cargarán dinámicamente -->
+                      <tr>
+                        <td colspan="6" class="text-center">Cargando servicios...</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- System Configuration Section (Initially Hidden) -->
+        <div class="row mb-4 d-none" id="system-config-section">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="mb-0">Configuración del Sistema</h5>
+              </div>
+              <div class="card-body">
+                <form id="system-config-form">
+                  <div class="mb-3">
+                    <label for="refresh-interval" class="form-label">Intervalo de actualización (segundos)</label>
+                    <input type="number" class="form-control" id="refresh-interval" min="10" value="60">
+                    <div class="form-text">Tiempo entre actualizaciones automáticas del dashboard.</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="uptime-threshold" class="form-label">Umbral de disponibilidad crítica (%)</label>
+                    <input type="number" class="form-control" id="uptime-threshold" min="0" max="100" value="95">
+                    <div class="form-text">Porcentaje por debajo del cual se considera que la disponibilidad es crítica.</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="response-threshold" class="form-label">Umbral de tiempo de respuesta (ms)</label>
+                    <input type="number" class="form-control" id="response-threshold" min="100" value="1000">
+                    <div class="form-text">Tiempo de respuesta por encima del cual se considera degradado.</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="retention-days" class="form-label">Retención de datos históricos (días)</label>
+                    <input type="number" class="form-control" id="retention-days" min="7" value="90">
+                    <div class="form-text">Días que se mantienen los datos históricos de incidentes.</div>
+                  </div>
+                  <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="enable-notifications" checked>
+                    <label class="form-check-label" for="enable-notifications">Habilitar notificaciones</label>
+                    <div class="form-text">Mostrar notificaciones en el navegador cuando ocurran incidentes.</div>
+                  </div>
+                  <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="auto-resolve-incidents">
+                    <label class="form-check-label" for="auto-resolve-incidents">Resolver incidentes automáticamente</label>
+                    <div class="form-text">Marcar incidentes como resueltos cuando el servicio vuelva a estar operativo.</div>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Guardar Configuración</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modals -->
+  <!-- Modal de Login -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="login-form">
+            <div class="mb-3">
+              <label for="username" class="form-label">Usuario</label>
+              <input type="text" class="form-control" id="login-username" required>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña</label>
+              <input type="password" class="form-control" id="login-password" required>
+            </div>
+            <div id="login-error" class="alert alert-danger d-none"></div>
+            <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Usuario -->
+  <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="userModalLabel">Gestionar Usuario</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="user-form">
+            <input type="hidden" id="user-id">
+            <div class="mb-3">
+              <label for="user-name" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="user-name" required>
+            </div>
+            <div class="mb-3">
+              <label for="user-username" class="form-label">Usuario</label>
+              <input type="text" class="form-control" id="user-username" required>
+            </div>
+            <div class="mb-3">
+              <label for="user-email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="user-email" required>
+            </div>
+            <div class="mb-3">
+              <label for="user-password" class="form-label">Contraseña</label>
+              <input type="password" class="form-control" id="user-password">
+              <div class="form-text">Dejar en blanco para mantener la contraseña actual.</div>
+            </div>
+            <div class="mb-3">
+              <label for="user-role" class="form-label">Rol</label>
+              <select class="form-select" id="user-role" required>
+                <option value="user">Usuario</option>
+                <option value="superuser">Superusuario</option>
+              </select>
+            </div>
+            <div id="user-error" class="alert alert-danger d-none"></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="delete-user-btn">Eliminar</button>
+          <button type="button" class="btn btn-primary" id="save-user-btn">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Custom JavaScript -->
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>

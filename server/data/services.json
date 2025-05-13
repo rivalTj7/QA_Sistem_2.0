@@ -1,0 +1,92 @@
+[
+  {
+    "id": "1",
+    "name": "API de Autenticación",
+    "description": "Servicio de autenticación y autorización",
+    "endpoint": "https://api.example.com/auth",
+    "status": "operational",
+    "responseTimeThreshold": 500,
+    "responseTime": 320,
+    "uptime": {
+      "last24h": 99.98,
+      "last7d": 99.95,
+      "last30d": 99.92
+    },
+    "lastChecked": "2025-05-12T08:30:00.000Z",
+    "tags": ["auth", "critical"],
+    "createdAt": "2025-01-15T10:00:00.000Z",
+    "updatedAt": "2025-05-12T08:30:00.000Z"
+  },
+  {
+    "id": "2",
+    "name": "API de Usuarios",
+    "description": "Gestión de perfiles de usuario",
+    "endpoint": "https://api.example.com/users",
+    "status": "operational",
+    "responseTimeThreshold": 800,
+    "responseTime": 450,
+    "uptime": {
+      "last24h": 100,
+      "last7d": 99.87,
+      "last30d": 99.76
+    },
+    "lastChecked": "2025-05-12T08:30:00.000Z",
+    "tags": ["users", "core"],
+    "createdAt": "2025-01-15T10:00:00.000Z",
+    "updatedAt": "2025-05-12T08:30:00.000Z"
+  },
+  {
+    "id": "3",
+    "name": "Servicio de Pagos",
+    "description": "Procesamiento de transacciones",
+    "endpoint": "https://api.example.com/payments",
+    "status": "degraded_performance",
+    "responseTimeThreshold": 600,
+    "responseTime": 890,
+    "uptime": {
+      "last24h": 95.43,
+      "last7d": 97.21,
+      "last30d": 98.54
+    },
+    "lastChecked": "2025-05-12T08:30:00.000Z",
+    "tags": ["payments", "critical"],
+    "createdAt": "2025-01-15T10:00:00.000Z",
+    "updatedAt": "2025-05-12T08:30:00.000Z"
+  },
+  {
+    "id": "4",
+    "name": "Servicio de Notificaciones",
+    "description": "Envío de notificaciones por email y SMS",
+    "endpoint": "https://api.example.com/notifications",
+    "status": "partial_outage",
+    "responseTimeThreshold": 700,
+    "responseTime": 1250,
+    "uptime": {
+      "last24h": 82.15,
+      "last7d": 91.34,
+      "last30d": 95.67
+    },
+    "lastChecked": "2025-05-12T08:30:00.000Z",
+    "tags": ["notifications"],
+    "createdAt": "2025-01-15T10:00:00.000Z",
+    "updatedAt": "2025-05-12T08:30:00.000Z"
+  },
+  {
+    "id": "5",
+    "name": "API de Productos",
+    "description": "Catálogo de productos",
+    "endpoint": "https://api.example.com/products",
+    "status": "operational",
+    "responseTimeThreshold": 800,
+    "responseTime": 380,
+    "uptime": {
+      "last24h": 100,
+      "last7d": 99.99,
+      "last30d": 99.95
+    },
+    "lastChecked": "2025-05-12T08:30:00.000Z",
+    "tags": ["products", "core"],
+    "createdAt": "2025-01-15T10:00:00.000Z",
+    "updatedAt": "2025-05-12T08:30:00.000Z"
+  }
+]
