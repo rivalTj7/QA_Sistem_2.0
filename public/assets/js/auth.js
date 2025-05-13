@@ -1,4 +1,4 @@
-// Archivo: public/assets/js/auth.js (verificación)
+// Archivo: public/assets/js/auth.js (corregido)
 
 /**
  * Módulo de autenticación
@@ -81,6 +81,34 @@ const AUTH = {
       usernameElement.textContent = user.name || user.username;
     }
     
+    // Configurar elementos del menú de usuario
+    const loginLink = document.getElementById('login-link');
+    const logoutLink = document.getElementById('logout-link');
+    const adminLink = document.getElementById('admin-link');
+    const userDivider = document.getElementById('user-divider');
+    
+    if (this.isAuthenticated()) {
+      // Usuario autenticado
+      if (loginLink) loginLink.classList.add('d-none');
+      if (logoutLink) logoutLink.classList.remove('d-none');
+      if (userDivider) userDivider.classList.remove('d-none');
+      
+      // Mostrar enlace de admin solo para superusuarios
+      if (adminLink) {
+        if (this.isSuperUser()) {
+          adminLink.classList.remove('d-none');
+        } else {
+          adminLink.classList.add('d-none');
+        }
+      }
+    } else {
+      // Usuario no autenticado
+      if (loginLink) loginLink.classList.remove('d-none');
+      if (logoutLink) logoutLink.classList.add('d-none');
+      if (adminLink) adminLink.classList.add('d-none');
+      if (userDivider) userDivider.classList.add('d-none');
+    }
+    
     // Mostrar/ocultar elementos según el rol
     if (this.isSuperUser()) {
       document.querySelectorAll('.superuser-only').forEach(el => {
@@ -91,8 +119,32 @@ const AUTH = {
         el.classList.add('d-none');
       });
     }
+    
+    if (this.isAuthenticated()) {
+      document.querySelectorAll('.authenticated-only').forEach(el => {
+        el.classList.remove('d-none');
+      });
+      document.querySelectorAll('.unauthenticated-only').forEach(el => {
+        el.classList.add('d-none');
+      });
+    } else {
+      document.querySelectorAll('.authenticated-only').forEach(el => {
+        el.classList.add('d-none');
+      });
+      document.querySelectorAll('.unauthenticated-only').forEach(el => {
+        el.classList.remove('d-none');
+      });
+    }
   }
 };
+
+/**
+ * Muestra el modal de inicio de sesión
+ */
+function showLoginModal() {
+  const modal = new bootstrap.Modal(document.getElementById('loginModal'));
+  modal.show();
+}
 
 // Inicialización cuando el DOM está listo
 document.addEventListener('DOMContentLoaded', function() {
@@ -126,6 +178,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Actualizar UI
         AUTH.updateUserUI();
         
+        // Cerrar modal si existe
+        const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+        if (loginModal) {
+          loginModal.hide();
+        }
+        
         // Redirigir según el rol
         const user = AUTH.getCurrentUser();
         if (user && user.role === 'superuser') {
@@ -153,4 +211,24 @@ document.addEventListener('DOMContentLoaded', function() {
       AUTH.logout();
     });
   }
+  
+  // Eventos adicionales de autenticación
+  const loginButton = document.getElementById('login-link');
+  if (loginButton) {
+    loginButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const loginModal = document.getElementById('loginModal');
+      if (loginModal) {
+        // Mostrar modal de login
+        showLoginModal();
+      } else {
+        // Redirigir a la página de login
+        window.location.href = 'login.html';
+      }
+    });
+  }
 });
+
+// Exponer función global
+window.showLoginModal = showLoginModal;
